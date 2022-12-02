@@ -1,5 +1,7 @@
 let canvas;
 let world;
+let canvasheight = 480;
+let canvaswidth = 720;
 
 function init() {
     canvas = document.getElementById('canvas');
