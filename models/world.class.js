@@ -2,37 +2,50 @@ class World {
 
     character = new Character();
     enemies = [
-        new Fish(),
-        new Fish(),
-        new Fish()
+        new Fish('green'),
+        new Fish('coral'),
+        new Fish('red')
     ];
-    background = new Background();
+    fixedbackground = new Background();
+    
     canvas;
     ctx;
+    keyboard;
 
-    constructor(canvas) {
+    constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.draw();
+        
+        this.keyboard = keyboard;
+        this.setWorld();
+        
+    }
+    setWorld(){
+        this.character.world = this;
     }
 
     draw() {
         this.ctx.clearRect(0,0,this.canvas.width, this.canvas.height);
-        this.ctx.drawImage(this.character.img, this.character.x, this.character.y, this.character.width, this.character.height);
-        this.enemies.forEach(enemy => {
-            this.ctx.drawImage(enemy.img, enemy.x, enemy.y, enemy.height, enemy.width);
-            if(enemy.x == 0) enemy.x = 500;
-            enemy.x--;
-        });
-
-        this.ctx.drawImage(this.background.img, this.background.x, this.background.y, this.background.width, this.background.height)
-        this.background.x--;
-        if(this.background.x == 0) this.background.x = 720;
+        this.ctx.drawImage(this.fixedbackground.img, 0, 0, canvaswidth, canvasheight)
+        this.addObjectToMap(this.character);
+        this.addObjectsToMap(this.enemies);
 
 
         let self = this;
         requestAnimationFrame(function () { self.draw(); });
 
-
     }
-}
+    
+    addObjectsToMap(objects){
+        objects.forEach(o => {
+            this.addObjectToMap(o);
+        });
+    }
+
+    addObjectToMap(mo){
+        this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
+    }
+
+
+};

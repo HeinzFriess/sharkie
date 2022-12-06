@@ -1,8 +1,8 @@
 class Background extends MovableObject{
     
-    constructor(img,x){
-        super().loadImage(img);
-        this.x = x;
+    constructor(){
+        super().loadImage('img/3. Background/Dark/1.png');
+        //this.x = x;
         this.y = canvasheight - this.height;
     }
 }
