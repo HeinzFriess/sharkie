@@ -58,6 +58,7 @@ class Character extends MovableObject {
                 this.img = this.imageCache[path];
                 this.currentImage++;
             }
+            this.idle = (!this.world.keyboard.UP || !this.world.keyboard.DOWN || !this.world.keyboard.LEFT || !this.world.keyboard.RIGHT);
            
         }, 100);
         
@@ -68,21 +69,21 @@ class Character extends MovableObject {
             this.y = this.y-15;
             this.idle = false;
         }
-        else if (this.world.keyboard.DOWN) {
+        if (this.world.keyboard.DOWN) {
             this.y = this.y+15;
             this.idle = false;
         }
-        else if (this.world.keyboard.LEFT) {
+        if (this.world.keyboard.LEFT) {
             this.x = this.x-15;
             this.idle = false;
+            this.otherDirection = true;
         }
-        else if (this.world.keyboard.RIGHT) {
+        if (this.world.keyboard.RIGHT) {
             this.x = this.x+15;
             this.idle = false;
+            this.otherDirection = false;
         }
-        else{
-            this.idle = true;
-        }
+    
     }
 
 
