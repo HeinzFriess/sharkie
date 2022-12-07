@@ -52,15 +52,21 @@ class Character extends MovableObject {
                 this.img = this.imageCache[path];
                 this.currentImage++;
             }
-            else{
+            this.idle = (!this.world.keyboard.UP || !this.world.keyboard.DOWN || !this.world.keyboard.LEFT || !this.world.keyboard.RIGHT);
+           
+        }, 1000/10);
+        setInterval(() => {
+            this.move();
+            if (!this.idle) {
                 let i = this.currentImage % this.IMAGES_SWIM.length;
                 let path = this.IMAGES_SWIM[i];
                 this.img = this.imageCache[path];
                 this.currentImage++;
+
             }
             this.idle = (!this.world.keyboard.UP || !this.world.keyboard.DOWN || !this.world.keyboard.LEFT || !this.world.keyboard.RIGHT);
            
-        }, 100);
+        }, 1000/30);
         
     }
 
@@ -73,13 +79,13 @@ class Character extends MovableObject {
             this.y = this.y+15;
             this.idle = false;
         }
-        if (this.world.keyboard.LEFT) {
+        if (this.world.keyboard.LEFT && this.x > 0) {
             this.x = this.x-15;
             this.idle = false;
             this.otherDirection = true;
             this.world.camera_x = -this.x;
         }
-        if (this.world.keyboard.RIGHT) {
+        if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEndX) {
             this.x = this.x+15;
             this.idle = false;
             this.otherDirection = false;
