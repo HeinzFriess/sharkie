@@ -1,6 +1,7 @@
 class World {
 
     character = new Character();
+    endboss = new Endboss();
     level = level1;
     //enemies = level1.enemies;
     //backgrounds = level1.backgrounds;
@@ -28,6 +29,7 @@ class World {
         this.ctx.translate(this.camera_x, 0);
         this.addObjectsToMap(this.level.backgrounds);
         this.addObjectToMap(this.character);
+        this.addObjectToMap(this.endboss);
         this.addObjectsToMap(this.level.enemies);
         this.ctx.translate(-this.camera_x, 0);
 
