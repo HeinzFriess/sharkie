@@ -1,7 +1,7 @@
 class Endboss extends MovableObject{
     idle = true;
-    x = 700;
-    y = 240;
+    x = 2400;
+    y = 140;
     height = 220;
     width = 360;
 

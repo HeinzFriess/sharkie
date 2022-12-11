@@ -79,17 +79,17 @@ class Character extends MovableObject {
             this.y = this.y+15;
             this.idle = false;
         }
-        if (this.world.keyboard.LEFT && this.x > 0) {
+        if (this.world.keyboard.LEFT && this.x > 15) {
             this.x = this.x-15;
             this.idle = false;
             this.otherDirection = true;
-            this.world.camera_x = -this.x;
+            if(this.x < this.world.level.levelEndCamera) this.world.camera_x = -this.x;
         }
-        if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEndX) {
+        if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEndCharacter) {
             this.x = this.x+15;
             this.idle = false;
             this.otherDirection = false;
-            this.world.camera_x = -this.x;
+            if(this.x < this.world.level.levelEndCamera) this.world.camera_x = -this.x;
         }
     
     }
