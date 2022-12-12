@@ -3,8 +3,12 @@ class World {
     character = new Character();
     endboss = new Endboss();
     level = level1;
-    //enemies = level1.enemies;
-    //backgrounds = level1.backgrounds;
+    statusbars = [
+        new StatusBar('energy'),
+        new StatusBar('coin'),
+        new StatusBar('poison')
+    ];
+    //statusbar = new StatusBar();
 
     canvas;
     ctx;
@@ -26,7 +30,7 @@ class World {
     checkCollisions(){
         setInterval(() => {
             this.level.enemies.forEach((enemy)=> {
-                if(this.character.isColliding(enemy)){
+                if(this.character.isColliding(enemy) && this.character.energy > 0){
                     this.character.energy -= 5;
                     console.log(this.character.energy);
                 }
@@ -43,6 +47,8 @@ class World {
         this.addObjectToMap(this.endboss);
         this.addObjectsToMap(this.level.enemies);
         this.ctx.translate(-this.camera_x, 0);
+        this.addObjectsToMap(this.statusbars);
+        //this.addObjectToMap(this.statusbar);
 
         let self = this;
         requestAnimationFrame(function () { self.draw(); });
@@ -58,7 +64,7 @@ class World {
     addObjectToMap(mo) {
         if (mo.otherDirection) this.flipImage(mo);
         mo.draw(this.ctx);
-        mo.drawFrame(this.ctx);
+        if(mo instanceof(MovableObject)) mo.drawFrame(this.ctx);
         if (mo.otherDirection) this.flipImageBack(mo);
     }
 

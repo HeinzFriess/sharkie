@@ -29,6 +29,18 @@ class Character extends MovableObject {
         'img/1.Sharkie/3.Swim/5.png',
         'img/1.Sharkie/3.Swim/6.png'
     ];
+
+    IMAGES_SLAP = [
+        'img/1.Sharkie/4.Attack/Fin slap/1.png',
+        'img/1.Sharkie/4.Attack/Fin slap/2.png',
+        'img/1.Sharkie/4.Attack/Fin slap/3.png',
+        'img/1.Sharkie/4.Attack/Fin slap/4.png',
+        'img/1.Sharkie/4.Attack/Fin slap/5.png',
+        'img/1.Sharkie/4.Attack/Fin slap/6.png',
+        'img/1.Sharkie/4.Attack/Fin slap/7.png',
+        'img/1.Sharkie/4.Attack/Fin slap/8.png'
+    ];
+
    
     idle = true;
     
@@ -40,6 +52,7 @@ class Character extends MovableObject {
         this.width = 220;
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_SWIM);
+        this.loadImages(this.IMAGES_SLAP);
         this.animate();
     }
 
@@ -51,9 +64,14 @@ class Character extends MovableObject {
                 let path = this.IMAGES_IDLE[i];
                 this.img = this.imageCache[path];
                 this.currentImage++;
-            }
-            this.idle = (!this.world.keyboard.UP || !this.world.keyboard.DOWN || !this.world.keyboard.LEFT || !this.world.keyboard.RIGHT);
-           
+            }if(this.world.keyboard.D) {
+                let i = this.currentImage % this.IMAGES_SLAP.length;
+                let path = this.IMAGES_SLAP[i];
+                this.img = this.imageCache[path];
+                this.currentImage++;
+            
+           }
+           this.idle = (!this.world.keyboard.UP || !this.world.keyboard.DOWN || !this.world.keyboard.LEFT || !this.world.keyboard.RIGHT);
         }, 1000/10);
         setInterval(() => {
             this.move();
@@ -72,12 +90,18 @@ class Character extends MovableObject {
 
     move(){
         if (this.world.keyboard.UP) {
-            this.y = this.y-15;
+            if (this.y > -70) {
+                this.y = this.y-15;
             this.idle = false;
+            }
+            
         }
         if (this.world.keyboard.DOWN) {
-            this.y = this.y+15;
+            if (this.y < 350) {
+                this.y = this.y+15;
             this.idle = false;
+            }
+            
         }
         if (this.world.keyboard.LEFT && this.x > 15) {
             this.x = this.x-15;
