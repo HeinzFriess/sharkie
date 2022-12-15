@@ -27,13 +27,13 @@ class Fish extends MovableObject {
     ];
 
 
-    constructor(color) {
+    constructor() {
         super().loadImage('img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim1.png');
-        this.setFishColor(color);
+        this.setFishColor();
         this.y = Math.random() * 450;
-        this.x = Math.random() * (720 - 200 +1) + 200;
-        this.loadImages(this.IMAGES_SWIMM);
+        this.x = Math.random() * 3000;
         this.speed = this.speed + Math.random() * 0.5;
+        this.loadImages(this.IMAGES_SWIMM);
         this.animate();
     }
 
@@ -48,10 +48,12 @@ class Fish extends MovableObject {
         
     }
 
-    setFishColor(color) {
-        if(color == 'red') this.IMAGES_SWIMM = this.IMAGES_SWIM_RED;
-        if(color == 'coral') this.IMAGES_SWIMM = this.IMAGES_SWIM_CORAL;
-        if(color == 'green') this.IMAGES_SWIMM = this.IMAGES_SWIM_GREEN;
+    setFishColor() {
+        let random = Math.random() * 4;
+        if(random < 1 ) this.IMAGES_SWIMM = this.IMAGES_SWIM_RED;
+        else if(random < 2 ) this.IMAGES_SWIMM = this.IMAGES_SWIM_CORAL;
+        else if (random < 3 ) this.IMAGES_SWIMM = this.IMAGES_SWIM_GREEN;
+        else this.IMAGES_SWIMM = this.IMAGES_SWIM_CORAL;
     }
 
 }

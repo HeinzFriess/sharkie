@@ -1,10 +1,11 @@
 class StatusBar extends DrawableObject{
 
     x = 20;
-    y = 20;
+    y = 10;
     height = 50;
     width = 250;
     IMAGES_STATUS = [];
+    barType;
 
     IMAGES_ENERGY = [
         'img/4.Marcadores/orange/0_energy.png',
@@ -36,7 +37,8 @@ class StatusBar extends DrawableObject{
 
     constructor(barType){
         super().loadImage('img/4.Marcadores/orange/0_energy.png');
-        this.setStatusBar(barType);
+        this.barType = barType
+        this.setStatusBar(this.barType);
         this.loadImages(this.IMAGES_STATUS);
         this.animate();
 
@@ -44,7 +46,11 @@ class StatusBar extends DrawableObject{
 
     animate(){
         setInterval(() => {
-            let path = this.IMAGES_STATUS[3];
+            let picNumber = 0;
+            if(this.barType == 'energy') picNumber = this.calulateEnergyLevel();
+            if(this.barType == 'coin') picNumber = this.world.character.coins;
+            if(this.barType == 'poison') picNumber = this.world.character.poisons;
+            let path = this.IMAGES_STATUS[picNumber];
             this.img = this.imageCache[path];
         }, 250);
     }
@@ -60,4 +66,14 @@ class StatusBar extends DrawableObject{
             this.y += 80;
         };
     }
+
+    calulateEnergyLevel(){
+        if (this.world.character.energy > 80) return 5;
+        else if (this.world.character.energy > 60) return 4;
+        else if (this.world.character.energy > 40) return 3;
+        else if (this.world.character.energy > 20) return 2;
+        else if (this.world.character.energy > 10) return 1;                    
+        else return 0;
+    }
+
 }

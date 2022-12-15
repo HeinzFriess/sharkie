@@ -2,13 +2,15 @@ class Level{
     enemies;
     waters;
     backgrounds;
+    collectables;
     levelEndCamera;
-    levelEndCharacter
+    levelEndCharacter;
 
-    constructor(enemies,waters,backgrounds,levelEndCamera){
+    constructor(enemies,waters,backgrounds,collectables,levelEndCamera){
         this.enemies = enemies;
         this.waters = waters;
         this.backgrounds = backgrounds;
+        this.collectables = collectables;
         this.levelEndCamera = levelEndCamera;
         this.levelEndCharacter = this.levelEndCamera + 520;
     }

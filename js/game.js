@@ -33,6 +33,9 @@ window.addEventListener("keydown", (e) => {
         case 68:
             keyboard.D = true;
             break;
+        case 49:
+            keyboard.SPACE = true;
+            break;
         default:
             break;
     }
@@ -58,6 +61,9 @@ window.addEventListener("keyup", (e) => {
             break;
         case 68:
             keyboard.D = false;
+            break;
+        case 49:
+            keyboard.SPACE = false;
             break;
         default:
             break;
