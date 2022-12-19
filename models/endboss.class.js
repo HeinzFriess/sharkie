@@ -4,6 +4,9 @@ class Endboss extends MovableObject{
     y = 140;
     height = 220;
     width = 360;
+    hurt = false;
+    attack = false;
+
 
     IMAGES_INTRO = [
         'img/2.Enemy/3FinalEnemy/1.Introduce/1.png',
@@ -61,19 +64,45 @@ class Endboss extends MovableObject{
 
     constructor(){
         super().loadImage(this.IMAGES_FLOAT[11]);
+        this.loadImages(this.IMAGES_INTRO);
         this.loadImages(this.IMAGES_FLOAT);
+        this.loadImages(this.IMAGES_ATTACK);
+        this.loadImages(this.IMAGES_DEAD);
+        this.loadImages(this.IMAGES_HURT);
         this.animate();
     }
 
     animate(){
-        setInterval(() => {
-            if (this.idle) {
-                let i = this.currentImage % this.IMAGES_FLOAT.length;
-                let path = this.IMAGES_FLOAT[i];
-                this.img = this.imageCache[path];
-                this.currentImage++;
+        let id = setInterval(() => {
+            if (this.runIntro) {
+                this.playAnimation(this.IMAGES_INTRO);
             }
+            if (this.idle) {
+               this.playAnimation(this.IMAGES_FLOAT);
+            }
+            if (this.hurt) {
+                this.playAnimation(this.IMAGES_HURT);
+            }
+            if(this.attack){
+                this.playAnimation(this.IMAGES_ATTACK);
+            }
+            if(this.energy < 0){
+                this.playAnimation(this.IMAGES_DEAD)
+                setTimeout(() => {
+                    //clearInterval(id);
+                    this.world.endbossDead = true;
+                }, 1000);
+            }
+
            
         }, 1000/10);
+    }
+
+    isHurt(){
+        this.energy -= 5;
+        this.hurt = true;
+        setTimeout(() => {
+            this.hurt = false;
+        }, 300);
     }
 }

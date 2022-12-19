@@ -3,6 +3,7 @@ class Character extends MovableObject {
     poisons = 0;
     slap = false;
     hurt = false;
+    hurtE = false;
     buble = false;
     
     IMAGES_IDLE = [
@@ -46,12 +47,18 @@ class Character extends MovableObject {
         'img/1.Sharkie/4.Attack/Fin slap/8.png'
     ];
 
-    IMAGES_POISONED = [
+    IMAGES_HURT_POISONED = [
         'img/1.Sharkie/5.Hurt/1.Poisoned/1.png',
         'img/1.Sharkie/5.Hurt/1.Poisoned/2.png',
         'img/1.Sharkie/5.Hurt/1.Poisoned/3.png',
         'img/1.Sharkie/5.Hurt/1.Poisoned/4.png',
         'img/1.Sharkie/5.Hurt/1.Poisoned/5.png'
+    ]
+
+    IMAGES_HURT_ELECTRO = [
+        'img/1.Sharkie/5.Hurt/2.Electric shock/1.png',
+        'img/1.Sharkie/5.Hurt/2.Electric shock/2.png',
+        'img/1.Sharkie/5.Hurt/2.Electric shock/3.png'
     ]
 
     IMAGES_BUBBLE = [
@@ -63,6 +70,34 @@ class Character extends MovableObject {
         'img/1.Sharkie/4.Attack/Bubble trap/op1/6.png',
         'img/1.Sharkie/4.Attack/Bubble trap/op1/7.png',
         'img/1.Sharkie/4.Attack/Bubble trap/op1/8.png'
+    ]
+
+    IMAGES_POISONED = [
+        'img/1.Sharkie/6.dead/1.Poisoned/1.png',
+        'img/1.Sharkie/6.dead/1.Poisoned/2.png',
+        'img/1.Sharkie/6.dead/1.Poisoned/3.png',
+        'img/1.Sharkie/6.dead/1.Poisoned/4.png',
+        'img/1.Sharkie/6.dead/1.Poisoned/5.png',
+        'img/1.Sharkie/6.dead/1.Poisoned/6.png',
+        'img/1.Sharkie/6.dead/1.Poisoned/7.png',
+        'img/1.Sharkie/6.dead/1.Poisoned/8.png',
+        'img/1.Sharkie/6.dead/1.Poisoned/9.png',
+        'img/1.Sharkie/6.dead/1.Poisoned/10.png',
+        'img/1.Sharkie/6.dead/1.Poisoned/11.png',
+        'img/1.Sharkie/6.dead/1.Poisoned/12.png'
+    ]
+
+    IMAGES_ELECTRO = [
+        'img/1.Sharkie/6.dead/2.Electro_shock/1.png',
+        'img/1.Sharkie/6.dead/2.Electro_shock/2.png',
+        'img/1.Sharkie/6.dead/2.Electro_shock/3.png',
+        'img/1.Sharkie/6.dead/2.Electro_shock/4.png',
+        'img/1.Sharkie/6.dead/2.Electro_shock/5.png',
+        'img/1.Sharkie/6.dead/2.Electro_shock/6.png',
+        'img/1.Sharkie/6.dead/2.Electro_shock/7.png',
+        'img/1.Sharkie/6.dead/2.Electro_shock/8.png',
+        'img/1.Sharkie/6.dead/2.Electro_shock/9.png',
+        'img/1.Sharkie/6.dead/2.Electro_shock/10.png'
     ]
 
    
@@ -79,79 +114,61 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_SLAP);
         this.loadImages(this.IMAGES_BUBBLE);
         this.loadImages(this.IMAGES_POISONED);
+        this.loadImages(this.IMAGES_HURT_POISONED);
+        this.loadImages(this.IMAGES_HURT_ELECTRO);
         this.animate();
     }
 
     animate() {
-        let slap = false;
-        let bubble = false;
-        let count = 0;
-        //idle intervall
+        this.slap = false;
+        this.buble = false;
         setInterval(() => {
             this.move();
-            if (this.idle && !slap && !bubble) {
-                let i = this.currentImage % this.IMAGES_IDLE.length;
-                let path = this.IMAGES_IDLE[i];
-                this.img = this.imageCache[path];
-                this.currentImage++;
+
+            if (this.idle && !this.slap && !this.buble && !this.hurt) {
+                this.playAnimation(this.IMAGES_IDLE);
             }
-            if(this.world.keyboard.D && !bubble) {
-                let i = this.currentImage % this.IMAGES_SLAP.length;
-                let path = this.IMAGES_SLAP[i];
-                this.img = this.imageCache[path];
-                this.currentImage++;
-                count++;
-                if (count == this.IMAGES_SLAP.length) {
-                    this.slap = false;
-                    count = 0;
-                }
+
+            if(this.world.keyboard.D && !this.buble && !this.hurt && this.coins > 0) {
+                this.playAnimation(this.IMAGES_SLAP);
+                this.coins -= 1;
            }
-           if(this.world.keyboard.SPACE && !slap ) {
-                let i = this.currentImage % this.IMAGES_BUBBLE.length;
-                let path = this.IMAGES_BUBBLE[i];
-                this.img = this.imageCache[path];
-                this.currentImage++;
-                count++;
-                if (count == this.IMAGES_BUBBLE.length) {
-                    bubble = false;
-                    count = 0;
-                }
 
+           if(this.world.keyboard.SPACE && !this.slap && !this.hurt && this.poisons > 0) {
+               this.playAnimation(this.IMAGES_BUBBLE);
+               this.world.throwableObjects.push(new ThrowableObject(this.x, this.y));
+               this.bubble -= 1;
             }
+
+            if (!this.idle && !this.slap && !this.buble && !this.hurt) {
+                this.playAnimation(this.IMAGES_SWIM);
+            }
+
+            if (this.hurt && !this.slap) {
+                this.playAnimation(this.IMAGES_HURT_POISONED);
+            }
+
+            if (this.hurtE && !this.slap) {
+                this.playAnimation(this.IMAGES_HURT_ELECTRO);
+            }
+
            this.idle = (!this.world.keyboard.UP || !this.world.keyboard.DOWN || !this.world.keyboard.LEFT || !this.world.keyboard.RIGHT);
-           this.slap = this.world.keyboard.D;
            this.buble = this.world.keyboard.SPACE;
-        }, 1000/10);
-        //move intervall
-        setInterval(() => {
-            this.move();
-            if (!this.idle && !slap && !bubble) {
-                let i = this.currentImage % this.IMAGES_SWIM.length;
-                let path = this.IMAGES_SWIM[i];
-                this.img = this.imageCache[path];
-                this.currentImage++;
-
-            }
-            this.idle = (!this.world.keyboard.UP || !this.world.keyboard.DOWN || !this.world.keyboard.LEFT || !this.world.keyboard.RIGHT);
-           
-        }, 1000/30);
-        // //hurt intervall
-        // setInterval(() => {
-        //     if (this.hurt) {
-        //         let i = this.currentImage % this.IMAGES_POISONED.length;
-        //         let path = this.IMAGES_POISONED[i];
-        //         this.img = this.imageCache[path];
-        //         this.currentImage++;
-        //     }
-                      
-        // }, 1000/10);
+           this.slap = this.world.keyboard.D;
+        }, 1000/15);
         
+       
     }
 
-    isHurt(){
-        this.hurt = true;
+    isHurt(enemy){
+        setTimeout(() => {
+            if (enemy instanceof Puffer && !this.slap) this.hurt = true;
+            if (enemy instanceof Jelly) this.hurtE = true;
+        }, 300);
+        
         setTimeout(() => {
             this.hurt = false;
+            this.hurtE = false;
         }, 400);
     }
 
@@ -182,7 +199,7 @@ class Character extends MovableObject {
             this.otherDirection = false;
             if(this.x < this.world.level.levelEndCamera) this.world.camera_x = -this.x;
         }
-    
+       
     }
 
 

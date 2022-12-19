@@ -1,4 +1,4 @@
-class Fish extends MovableObject {
+class Puffer extends MovableObject {
     y = 300;
     height = 40;
     width = 60;
@@ -27,13 +27,14 @@ class Fish extends MovableObject {
     ];
 
 
-    constructor() {
+    constructor(world) {
         super().loadImage('img/2.Enemy/1.Puffer fish (3 color options)/1.Swim/1.swim1.png');
         this.setFishColor();
         this.y = Math.random() * 450;
-        this.x = Math.random() * 3000;
+        this.x = Math.random() * 3000 + 300;
         this.speed = this.speed + Math.random() * 0.5;
         this.loadImages(this.IMAGES_SWIMM);
+        this.world = world;
         this.animate();
     }
 

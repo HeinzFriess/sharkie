@@ -22,6 +22,13 @@ class DrawableObject{
 
     }
     
+    playAnimation(array){
+        let i = this.currentImage % array.length;
+        let path = array[i];
+        this.img = this.imageCache[path];
+        this.currentImage++;
+    }
+
     draw(ctx){
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
     }

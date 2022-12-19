@@ -7,9 +7,16 @@ let keyboard = new Keyboard();
 function init() {
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
-
+    addEnemies();
 
     //ctx.drawImage(character.src, 20, 20, 50, 100);
+}
+
+function addEnemies(){
+    setInterval(() => {
+        if (world.level.enemies.length < 20) world.level.enemies.push(new Puffer());
+        if (world.level.enemies.length < 20) world.level.enemies.push(new Jelly());
+    }, 2000);
 }
 
 window.addEventListener("keydown", (e) => {

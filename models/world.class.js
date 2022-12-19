@@ -8,12 +8,13 @@ class World {
         new StatusBar('coin'),
         new StatusBar('poison')
     ];
-    //statusbar = new StatusBar();
-
+    throwableObjects = [new ThrowableObject(2000,400)];
     canvas;
     ctx;
     keyboard;
     camera_x = 0;
+    endbossDead = false;
+    characterDead = false;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -21,21 +22,18 @@ class World {
         this.draw();
         this.keyboard = keyboard;
         this.setWorld();
+        this.checkHit();
         this.checkCollisions();
-        this.addEnemies();
+        this.clearElements();
+        //this.addEnemies();
     }
     setWorld() {
         this.character.world = this;
+        this.endboss.world = this;
         this.statusbars.forEach(statusbar => {
             statusbar.world = this;
         });
 
-    }
-
-    addEnemies(){
-        setInterval(() => {
-            this.level.enemies.push(new Fish());
-        }, 2000);
     }
 
     checkCollisions() {
@@ -43,25 +41,52 @@ class World {
             this.level.enemies.forEach((enemy) => {
                 if (this.character.isColliding(enemy) && this.character.energy > 0 && !this.character.hurt) {
                     this.character.energy -= 5;
-                    this.character.isHurt();
+                    this.character.isHurt(enemy);
                     
-                };
-                if (this.character.isColliding(enemy) && this.character.slap) {
-                    this.removeElementFromArray(enemy, this.level.enemies);
                 };
             });
             this.level.collectables.forEach((collectable) => {
-                if (this.character.isColliding(collectable) && collectable instanceof Coin && this.character.coins < 5) {
-                    this.character.coins += 1;
+                if (this.character.isColliding(collectable) && collectable instanceof Coin && this.character.coins < 100) {
+                    this.character.coins += 10;
                     this.removeElementFromArray(collectable, this.level.collectables);
                 };
-                if (this.character.isColliding(collectable) && collectable instanceof Poison && this.character.poisons < 5) {
-                    this.character.poisons += 1;
+                if (this.character.isColliding(collectable) && collectable instanceof Poison && this.character.poisons < 100) {
+                    this.character.poisons += 10;
                     this.removeElementFromArray(collectable, this.level.collectables);
                 };
             });
         }, 100);
 
+    }
+
+    checkHit(){
+        setInterval(() => {
+            this.level.enemies.forEach((enemy) => {
+                if (this.character.isHit(enemy) && this.character.slap && this.character.coins > 0) {
+                    this.removeElementFromArray(enemy, this.level.enemies);
+                };
+                this.throwableObjects.forEach((bubble) => {
+                    if (bubble.isHit(enemy)) {
+                        this.removeElementFromArray(enemy, this.level.enemies);
+                        this.character.poisons -=5;
+                    }
+                    if (bubble.isHit(this.endboss)) this.endboss.isHurt();
+                });
+
+            });           
+        }, 80);
+    }
+
+    clearElements(){
+        setInterval(() => {
+            this.level.enemies.forEach(enemie => {
+                if (enemie.x < -50 || enemie.y > 500) this.removeElementFromArray(enemie,this.level.enemies)
+            });
+            this.throwableObjects.forEach(bubble => {
+                if (bubble.y > 500) this.removeElementFromArray(bubble,this.throwableObjects)
+            });
+        }, 1000);
+       
     }
 
     removeElementFromArray(element, array) {
@@ -76,8 +101,9 @@ class World {
         this.addObjectsToMap(this.level.backgrounds);
         this.addObjectToMap(this.character);
         this.addObjectsToMap(this.level.collectables);
-        this.addObjectToMap(this.endboss);
+        if(!this.endbossDead)this.addObjectToMap(this.endboss);
         this.addObjectsToMap(this.level.enemies);
+        this.addObjectsToMap(this.throwableObjects);
         this.ctx.translate(-this.camera_x, 0);
         this.addObjectsToMap(this.statusbars);
 
@@ -88,15 +114,16 @@ class World {
     }
 
     addObjectsToMap(objects) {
-        objects.forEach(o => {
+        
+        if(objects) {objects.forEach(o => {
             this.addObjectToMap(o);
-        });
+        });}
     }
 
     addObjectToMap(mo) {
         if (mo.otherDirection) this.flipImage(mo);
         mo.draw(this.ctx);
-        if (mo instanceof (MovableObject)) mo.drawFrame(this.ctx);
+        if (mo instanceof MovableObject) mo.drawFrame(this.ctx);
         if (mo.otherDirection) this.flipImageBack(mo);
     }
 

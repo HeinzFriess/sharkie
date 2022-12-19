@@ -47,9 +47,9 @@ class StatusBar extends DrawableObject{
     animate(){
         setInterval(() => {
             let picNumber = 0;
-            if(this.barType == 'energy') picNumber = this.calulateEnergyLevel();
-            if(this.barType == 'coin') picNumber = this.world.character.coins;
-            if(this.barType == 'poison') picNumber = this.world.character.poisons;
+            if(this.barType == 'energy') picNumber = this.calulateLevel(this.world.character.energy);
+            if(this.barType == 'coin') picNumber = this.calulateLevel(this.world.character.coins);
+            if(this.barType == 'poison') picNumber = this.calulateLevel(this.world.character.poisons);
             let path = this.IMAGES_STATUS[picNumber];
             this.img = this.imageCache[path];
         }, 250);
@@ -67,12 +67,12 @@ class StatusBar extends DrawableObject{
         };
     }
 
-    calulateEnergyLevel(){
-        if (this.world.character.energy > 80) return 5;
-        else if (this.world.character.energy > 60) return 4;
-        else if (this.world.character.energy > 40) return 3;
-        else if (this.world.character.energy > 20) return 2;
-        else if (this.world.character.energy > 10) return 1;                    
+    calulateLevel(value){
+        if (value > 80) return 5;
+        else if (value > 60) return 4;
+        else if (value > 40) return 3;
+        else if (value > 20) return 2;
+        else if (value > 10) return 1;                    
         else return 0;
     }
 

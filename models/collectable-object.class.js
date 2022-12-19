@@ -14,10 +14,7 @@ class CollectableObject extends DrawableObject{
 
     animate(){
         setInterval(() => {
-            let i = this.currentImage % this.IMAGES_ARRAY.length;
-            let path = this.IMAGES_ARRAY[i];
-            this.img = this.imageCache[path];
-            this.currentImage++;
+            this.playAnimation(this.IMAGES_ARRAY);
         }, 100);
     }
 
