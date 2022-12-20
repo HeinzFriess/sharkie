@@ -12,6 +12,12 @@ function init() {
     //ctx.drawImage(character.src, 20, 20, 50, 100);
 }
 
+function initLevel1(){
+    init();
+    document.getElementById('canvas').classList.remove('d-none');
+    document.getElementById('startScreen').classList.add('d-none');
+}
+
 function addEnemies(){
     setInterval(() => {
         if (world.level.enemies.length < 20) world.level.enemies.push(new Puffer());

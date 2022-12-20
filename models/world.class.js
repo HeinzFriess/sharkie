@@ -123,7 +123,7 @@ class World {
     addObjectToMap(mo) {
         if (mo.otherDirection) this.flipImage(mo);
         mo.draw(this.ctx);
-        if (mo instanceof MovableObject) mo.drawFrame(this.ctx);
+        //if (mo instanceof MovableObject) mo.drawFrame(this.ctx);
         if (mo.otherDirection) this.flipImageBack(mo);
     }
 

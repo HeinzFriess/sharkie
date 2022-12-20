@@ -5,7 +5,7 @@ class Character extends MovableObject {
     hurt = false;
     hurtE = false;
     buble = false;
-    
+
     IMAGES_IDLE = [
         'img/1.Sharkie/1.IDLE/1.png',
         'img/1.Sharkie/1.IDLE/2.png',
@@ -100,10 +100,10 @@ class Character extends MovableObject {
         'img/1.Sharkie/6.dead/2.Electro_shock/10.png'
     ]
 
-   
+
     idle = true;
-    
-    constructor(){
+
+    constructor() {
         super().loadImage('img/1.Sharkie/1.IDLE/1.png');
         this.y = 50;
         this.x = 50;
@@ -129,15 +129,15 @@ class Character extends MovableObject {
                 this.playAnimation(this.IMAGES_IDLE);
             }
 
-            if(this.world.keyboard.D && !this.buble && !this.hurt && this.coins > 0) {
-                this.playAnimation(this.IMAGES_SLAP);
+            if (this.world.keyboard.D && !this.buble && !this.hurt && this.coins ) {
+                this.playAnimationOnce(this.IMAGES_SLAP, this.world.keyboard.D);
                 this.coins -= 1;
-           }
+            }
 
-           if(this.world.keyboard.SPACE && !this.slap && !this.hurt && this.poisons > 0) {
-               this.playAnimation(this.IMAGES_BUBBLE);
-               this.world.throwableObjects.push(new ThrowableObject(this.x, this.y));
-               this.bubble -= 1;
+            if (this.world.keyboard.SPACE && !this.slap && !this.hurt && this.poisons) { 
+                this.playAnimation(this.IMAGES_BUBBLE, this.world.keyboard.SPACE);
+                if(this.world.throwableObjects.length == 0)this.world.throwableObjects.push(new ThrowableObject(this.x, this.y));
+                this.bubble -= 10;
             }
 
             if (!this.idle && !this.slap && !this.buble && !this.hurt) {
@@ -152,54 +152,54 @@ class Character extends MovableObject {
                 this.playAnimation(this.IMAGES_HURT_ELECTRO);
             }
 
-           this.idle = (!this.world.keyboard.UP || !this.world.keyboard.DOWN || !this.world.keyboard.LEFT || !this.world.keyboard.RIGHT);
-           this.buble = this.world.keyboard.SPACE;
-           this.slap = this.world.keyboard.D;
-        }, 1000/15);
-        
-       
+            this.idle = (!this.world.keyboard.UP || !this.world.keyboard.DOWN || !this.world.keyboard.LEFT || !this.world.keyboard.RIGHT);
+            this.buble = this.world.keyboard.SPACE;
+            this.slap = this.world.keyboard.D;
+        }, 1000 / 15);
+
+
     }
 
-    isHurt(enemy){
+    isHurt(enemy) {
         setTimeout(() => {
             if (enemy instanceof Puffer && !this.slap) this.hurt = true;
             if (enemy instanceof Jelly) this.hurtE = true;
         }, 300);
-        
+
         setTimeout(() => {
             this.hurt = false;
             this.hurtE = false;
         }, 400);
     }
 
-    move(){
+    move() {
         if (this.world.keyboard.UP) {
             if (this.y > -70) {
-                this.y = this.y-15;
-            this.idle = false;
+                this.y = this.y - 15;
+                this.idle = false;
             }
-            
+
         }
         if (this.world.keyboard.DOWN) {
             if (this.y < 350) {
-                this.y = this.y+15;
-            this.idle = false;
+                this.y = this.y + 15;
+                this.idle = false;
             }
-            
+
         }
         if (this.world.keyboard.LEFT && this.x > 15) {
-            this.x = this.x-15;
+            this.x = this.x - 15;
             this.idle = false;
             this.otherDirection = true;
-            if(this.x < this.world.level.levelEndCamera) this.world.camera_x = -this.x;
+            if (this.x < this.world.level.levelEndCamera) this.world.camera_x = -this.x;
         }
         if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEndCharacter) {
-            this.x = this.x+15;
+            this.x = this.x + 15;
             this.idle = false;
             this.otherDirection = false;
-            if(this.x < this.world.level.levelEndCamera) this.world.camera_x = -this.x;
+            if (this.x < this.world.level.levelEndCamera) this.world.camera_x = -this.x;
         }
-       
+
     }
 
 

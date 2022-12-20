@@ -7,6 +7,8 @@ class DrawableObject{
     img;
     height = 100;
     width = 200;
+    sequenz = false;
+    sequenzcount = 0;
 
     loadImage(path) {
         this.img = new Image();
@@ -27,6 +29,23 @@ class DrawableObject{
         let path = array[i];
         this.img = this.imageCache[path];
         this.currentImage++;
+    }
+
+    
+    playAnimationOnce(array,trigger){
+        if(trigger && !this.sequenz){
+            this.sequenzcount = 0;
+            this.sequenz = true;
+        }
+        if (this.sequenzcount < array.length) {
+            let path = array[this.sequenzcount];
+            this.img = this.imageCache[path];
+            this.sequenzcount++;
+        }
+        setTimeout(() => {
+           this.sequenz = false; 
+        }, 500);
+       
     }
 
     draw(ctx){
