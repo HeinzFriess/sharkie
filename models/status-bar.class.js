@@ -45,7 +45,7 @@ class StatusBar extends DrawableObject{
     }
 
     animate(){
-        setInterval(() => {
+        setDeletableInterval(() => {
             let picNumber = 0;
             if(this.barType == 'energy') picNumber = this.calulateLevel(this.world.character.energy);
             if(this.barType == 'coin') picNumber = this.calulateLevel(this.world.character.coins);

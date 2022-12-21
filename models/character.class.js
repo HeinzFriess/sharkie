@@ -122,7 +122,7 @@ class Character extends MovableObject {
     animate() {
         this.slap = false;
         this.buble = false;
-        setInterval(() => {
+        setDeletableInterval(() => {
             this.move();
 
             if (this.idle && !this.slap && !this.buble && !this.hurt) {

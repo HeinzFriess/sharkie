@@ -12,7 +12,7 @@ class Water extends MovableObject{
     animate() {
         let count = 0;
         let up = true;
-        setInterval(() => {
+        setDeletableInterval(() => {
             if(up){
                 this.x += 0.8;
                 count++;

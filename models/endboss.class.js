@@ -73,7 +73,7 @@ class Endboss extends MovableObject{
     }
 
     animate(){
-        let id = setInterval(() => {
+        setDeletableInterval(() => {
             if (this.runIntro) {
                 this.playAnimation(this.IMAGES_INTRO);
             }

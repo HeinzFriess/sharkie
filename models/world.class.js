@@ -2,13 +2,13 @@ class World {
 
     character = new Character();
     endboss = new Endboss();
-    level = level1;
+    level;
     statusbars = [
         new StatusBar('energy'),
         new StatusBar('coin'),
         new StatusBar('poison')
     ];
-    throwableObjects = [new ThrowableObject(2000,400)];
+    throwableObjects = [new ThrowableObject(2000, 400)];
     canvas;
     ctx;
     keyboard;
@@ -19,12 +19,14 @@ class World {
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
+        this.level = level1;
         this.draw();
         this.keyboard = keyboard;
         this.setWorld();
         this.checkHit();
         this.checkCollisions();
         this.clearElements();
+        this.checkGameStatus();
         //this.addEnemies();
     }
     setWorld() {
@@ -36,13 +38,39 @@ class World {
 
     }
 
+    resetGame() {
+        allIntervalIDs.forEach(id => {
+            clearInterval(id);
+        });
+        this.level.enemies = [];
+        this.level.collectables = [];
+    }
+
+    checkGameStatus() {
+        setDeletableInterval(() => {
+            if (this.character.energy == 0) {
+                setTimeout(() => {
+                    endOfGame(false);
+                    this.resetGame();
+                }, 1000);
+            };
+            if (this.endboss.energy < 0) {
+                setTimeout(() => {
+                    endOfGame(true);
+                    resetGame();
+                }, 1000);
+            };
+        }, 100);
+
+    }
+
     checkCollisions() {
-        setInterval(() => {
+        setDeletableInterval(() => {
             this.level.enemies.forEach((enemy) => {
                 if (this.character.isColliding(enemy) && this.character.energy > 0 && !this.character.hurt) {
                     this.character.energy -= 5;
                     this.character.isHurt(enemy);
-                    
+
                 };
             });
             this.level.collectables.forEach((collectable) => {
@@ -59,8 +87,8 @@ class World {
 
     }
 
-    checkHit(){
-        setInterval(() => {
+    checkHit() {
+        setDeletableInterval(() => {
             this.level.enemies.forEach((enemy) => {
                 if (this.character.isHit(enemy) && this.character.slap && this.character.coins > 0) {
                     this.removeElementFromArray(enemy, this.level.enemies);
@@ -68,25 +96,25 @@ class World {
                 this.throwableObjects.forEach((bubble) => {
                     if (bubble.isHit(enemy)) {
                         this.removeElementFromArray(enemy, this.level.enemies);
-                        this.character.poisons -=5;
+                        this.character.poisons -= 5;
                     }
                     if (bubble.isHit(this.endboss)) this.endboss.isHurt();
                 });
 
-            });           
+            });
         }, 80);
     }
 
-    clearElements(){
-        setInterval(() => {
+    clearElements() {
+        setDeletableInterval(() => {
             this.level.enemies.forEach(enemie => {
-                if (enemie.x < -50 || enemie.y > 500) this.removeElementFromArray(enemie,this.level.enemies)
+                if (enemie.x < -50 || enemie.y > 500) this.removeElementFromArray(enemie, this.level.enemies)
             });
             this.throwableObjects.forEach(bubble => {
-                if (bubble.y > 500) this.removeElementFromArray(bubble,this.throwableObjects)
+                if (bubble.y > 500) this.removeElementFromArray(bubble, this.throwableObjects)
             });
         }, 1000);
-       
+
     }
 
     removeElementFromArray(element, array) {
@@ -101,7 +129,7 @@ class World {
         this.addObjectsToMap(this.level.backgrounds);
         this.addObjectToMap(this.character);
         this.addObjectsToMap(this.level.collectables);
-        if(!this.endbossDead)this.addObjectToMap(this.endboss);
+        if (!this.endbossDead) this.addObjectToMap(this.endboss);
         this.addObjectsToMap(this.level.enemies);
         this.addObjectsToMap(this.throwableObjects);
         this.ctx.translate(-this.camera_x, 0);
@@ -114,10 +142,12 @@ class World {
     }
 
     addObjectsToMap(objects) {
-        
-        if(objects) {objects.forEach(o => {
-            this.addObjectToMap(o);
-        });}
+
+        if (objects) {
+            objects.forEach(o => {
+                this.addObjectToMap(o);
+            });
+        }
     }
 
     addObjectToMap(mo) {

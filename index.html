@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sharkie</title>
+    <script src="./js/script.js"></script>
     <script src="./models/drawable-object.class.js"></script>
     <script src="./models/moveable-object.class.js"></script>
     <script src="./models/collectable-object.class.js"></script>
@@ -22,19 +24,55 @@
     <script src="./models/keyboard.class.js"></script>
     <script src="./models/level.class.js"></script>
     <script src="./levels/level1.js"></script>
-    <script src="./js/game.js"></script>    
+    <script src="./js/game.js"></script>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body onload="">
-    <h1>Sharkie</h1>
-    <div id="startScreen" class="">
-        
+    <div id="screen">
+        <h1>Sharkie</h1>
+        <div id="startScreen" class="">
+            <div class="headline">
+                <h2>Welcome to the adventure under the see</h2>
+                <h3> * help little Sharkie to survive his epic journey * </h3>
+            </div>
+            <div class="explanation">
+                <div class="explanationBox">
+                    <img src="img/6.Botones/Key/arrow keys.png" alt="">
+                    <h4>controll the direction off little sharkie with the arrow buttons</h4>
+                </div>
+                <div class="explanationBox">
+                    <img src="img/6.Botones/Key/D key.png" style="height: 40px; width: 40px">
+                    <h4>when collected enough coins you can slap your enenmies</h4>
+                </div>
+                <div class="explanationBox">
+                    <img src="img/6.Botones/Key/Space Bar key.png" alt="">
+                    <h4>when collected enough magic potion use the space bar to spit toxic bubbles</h4>
+                </div>
+
+
+            </div>
+
+        </div>
+        <div id="endScreen" class="d-none">
+            <img id="endScreenPic" src="img/6.Botones/Tittles/You win/Mesa de trabajo 1.png"
+                style="width: 720px; border-radius: 24px">
+        </div>
+        <div id="sideMenu">
+            <img id="restartButton" class="button d-none" onclick="initLevel1()"
+                src="img/6.Botones/Try again/Recurso 17.png" alt="">
+            <img id="fullScreenButton" class="button" onclick="fullscreen()" src="img/6.Botones/Full Screen/Mesa de trabajo 7.png"
+                alt="">
+        </div>
+        <canvas id="canvas" width="720" height="480" class="d-none">
+
+        </canvas>
+
+        <img id="startButton" class="button" onclick="initLevel1()" src="img/6.Botones/Start/2.png" alt="">
+
     </div>
 
-    <canvas id="canvas" width="720" height="480" class="d-none">
 
-    </canvas>
-    <img class="startButton" onclick="initLevel1()" src="img/6.Botones/Start/3.png" alt="">
-    
 </body>
+
 </html>

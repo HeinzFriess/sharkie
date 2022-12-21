@@ -16,6 +16,7 @@ function initLevel1(){
     init();
     document.getElementById('canvas').classList.remove('d-none');
     document.getElementById('startScreen').classList.add('d-none');
+    document.getElementById('startButton').classList.add('d-none');
 }
 
 function addEnemies(){
@@ -24,6 +25,18 @@ function addEnemies(){
         if (world.level.enemies.length < 20) world.level.enemies.push(new Jelly());
     }, 2000);
 }
+
+function endOfGame(playerHasWone){
+    let element = document.getElementById('endScreenPic')
+    if (!playerHasWone) {
+        element.src = 'img/6.Botones/Tittles/Game Over/Recurso 12.png';
+    }
+    document.getElementById('canvas').classList.add('d-none');
+    document.getElementById('endScreen').classList.remove('d-none');
+    document.getElementById('restartButton').classList.remove('d-none');
+    init();
+}
+
 
 window.addEventListener("keydown", (e) => {
     switch (e.which) {

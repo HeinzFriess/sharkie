@@ -42,7 +42,7 @@ class Jelly extends MovableObject {
     }
 
     animate() {
-        setInterval(() => {
+        setDeletableInterval(() => {
             this.playAnimation(this.IMAGES_SWIMM);
         }, 400);
         this.moveDown();

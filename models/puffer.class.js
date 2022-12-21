@@ -39,7 +39,7 @@ class Puffer extends MovableObject {
     }
 
     animate() {
-        setInterval(() => {
+        setDeletableInterval(() => {
             let i = this.currentImage % this.IMAGES_SWIMM.length;
             let path = this.IMAGES_SWIMM[i];
             this.img = this.imageCache[path];

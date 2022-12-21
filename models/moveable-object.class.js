@@ -18,19 +18,19 @@ class MovableObject extends DrawableObject{
     }
 
     moveRight() {
-        setInterval(() => {
+        setDeletableInterval(() => {
             this.x += this.speed * 50;
         }, 1000 / 40);
     }
 
     moveLeft() {
-        setInterval(() => {
+        setDeletableInterval(() => {
             this.x -= this.speed;
         }, 1000 / 60);
     }
 
     moveDown() {
-        setInterval(() => {
+        setDeletableInterval(() => {
             this.y += this.speed;
         }, 1000 / 30);
     }
@@ -54,7 +54,7 @@ class MovableObject extends DrawableObject{
     }
 
     applyGravity(){
-        setInterval(() => {
+        setDeletableInterval(() => {
             if (this.isAboveGround() || this.speedY > 0) {
                 this.y -= this.speedY;
                 this.speedY -= this.acceleration;

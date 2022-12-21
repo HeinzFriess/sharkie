@@ -13,7 +13,7 @@ class CollectableObject extends DrawableObject{
     }
 
     animate(){
-        setInterval(() => {
+        setDeletableInterval(() => {
             this.playAnimation(this.IMAGES_ARRAY);
         }, 100);
     }

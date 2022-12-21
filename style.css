@@ -2,20 +2,27 @@
     font-family:"Lucky_Guy";
     src: url("./img/5.Font/Luckiest_Guy/LuckiestGuy-Regular.ttf") format("truetype");
   }
+
 body{
+    margin: 0;
+}
+
+#screen{
+    height: 100vh;
+    width: 100vw;
     font-family: Lucky_Guy;
     display: flex;
     flex-direction: column;
     align-items: center;
     background-color: midnightblue;
     background-image: url('img/3.Background/Dark/1.png');
-    
-    color: white;
+    color: #7fffe0;
     
 }
 
 canvas{
     background-color: orange;
+    border-radius: 24px;
 }
 
 h1{
@@ -27,16 +34,51 @@ h1{
 }
 
 #startScreen{
-    background-image: url('img/4.Marcadores/op d1.png');
-    width: 720px;
-    height: 480px;
+    /* background-image: url('img/3.Background/Layers/5.Water/D1.png');
+    background-color: midnightblue;
+    max-width: 720px;
+    max-height: 480px; */
     background-size: cover;
+    box-shadow: 11px 11px 11px 11px rgb(0 0 0 / 44%);
+    border-radius: 24px;
+    margin-left: 24px;
+    margin-right: 24px;
 }
 
-.startButton{
-    /* background-image: url('img/6.Botones/Start/3.png'); */
+.button{
     height: 60px;
     width: 120px;
     object-fit: contain;
     cursor: pointer;
+}
+
+#sideMenu{
+    position: absolute;
+    top: 25px;
+    left: 25px;
+    height: 200px;
+    width: 200px;
+}
+
+.headline{
+    text-align: center;
+}
+
+.explanation{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.explanationBox{
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    width: 200px;
+}
+
+.explanation img{
+    width: 180px;
 }
