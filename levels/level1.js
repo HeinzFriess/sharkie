@@ -3,14 +3,14 @@ let level1;
 function initLevel1() {
 
     level1 = new Level(
-        [
-            new Puffer(),
-            new Puffer(),
-            new Puffer(),
-            new Puffer(),
-            new Jelly(),
-            new Jelly()
-        ],
+        // [
+        //     new Puffer(),
+        //     new Puffer(),
+        //     new Puffer(),
+        //     new Puffer(),
+        //     new Jelly(),
+        //     new Jelly()
+        // ],
         [
             new Water('img/3.Background/Layers/5.Water/D1.png', -100),
             new Water('img/3.Background/Layers/5.Water/D2.png', 619),
@@ -36,30 +36,30 @@ function initLevel1() {
             new Background('img/3.Background/Layers/2.Floor/D2.png', 2159),
             new Background('img/3.Background/Layers/1.Light/2.png', 2159)
         ],
-        [
-            new Coin(),
-            new Coin(),
-            new Coin(),
-            new Coin(),
-            new Coin(),
-            new Coin(),
-            new Coin(),
-            new Coin(),
-            new Coin(),
-            new Coin(),
-            new Coin(),
-            new Poison(),
-            new Poison(),
-            new Poison(),
-            new Poison(),
-            new Poison(),
-            new Poison(),
-            new Poison(),
-            new Poison(),
-            new Poison(),
-            new Poison(),
-            new Poison()
-        ],
+        // [
+        //     new Coin(),
+        //     new Coin(),
+        //     new Coin(),
+        //     new Coin(),
+        //     new Coin(),
+        //     new Coin(),
+        //     new Coin(),
+        //     new Coin(),
+        //     new Coin(),
+        //     new Coin(),
+        //     new Coin(),
+        //     new Poison(),
+        //     new Poison(),
+        //     new Poison(),
+        //     new Poison(),
+        //     new Poison(),
+        //     new Poison(),
+        //     new Poison(),
+        //     new Poison(),
+        //     new Poison(),
+        //     new Poison(),
+        //     new Poison()
+        // ],
         2140
     )
 }

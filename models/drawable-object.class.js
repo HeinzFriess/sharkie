@@ -32,8 +32,8 @@ class DrawableObject{
     }
 
     
-    playAnimationOnce(array,trigger){
-        if(trigger && !this.sequenz){
+    playAnimationOnce(array,ressettime){
+        if(!this.sequenz){
             this.sequenzcount = 0;
             this.sequenz = true;
         }
@@ -43,8 +43,8 @@ class DrawableObject{
             this.sequenzcount++;
         }
         setTimeout(() => {
-           this.sequenz = false; 
-        }, 500);
+            this.sequenz = false;
+        }, ressettime);
        
     }
 

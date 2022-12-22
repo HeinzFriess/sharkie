@@ -6,9 +6,10 @@ let keyboard = new Keyboard();
 
 function init() {
     canvas = document.getElementById('canvas');
+    canvas.classList.remove('d-none');
     world = new World(canvas, keyboard);
     addEnemies();
-
+    addCollectables();
     //ctx.drawImage(character.src, 20, 20, 50, 100);
 }
 
@@ -17,15 +18,23 @@ function initLevel1(){
     document.getElementById('canvas').classList.remove('d-none');
     document.getElementById('startScreen').classList.add('d-none');
     document.getElementById('startButton').classList.add('d-none');
+    document.getElementById('endScreen').classList.add('d-none');
 }
 
 function addEnemies(){
-    setInterval(() => {
-        if (world.level.enemies.length < 20) world.level.enemies.push(new Puffer());
-        if (world.level.enemies.length < 20) world.level.enemies.push(new Jelly());
+    setDeletableInterval(() => {
+        if (world.enemies.length < 20) world.enemies.push(new Puffer());
+        if (world.enemies.length < 20) world.enemies.push(new Jelly());
     }, 2000);
 }
 
+
+function addCollectables(){
+    setDeletableInterval(() => {
+        if (world.collectables.length < 20) world.collectables.push(new Coin());
+        if (world.collectables.length < 20) world.collectables.push(new Poison());
+    }, 2000);
+}
 function endOfGame(playerHasWone){
     let element = document.getElementById('endScreenPic')
     if (!playerHasWone) {
@@ -34,7 +43,12 @@ function endOfGame(playerHasWone){
     document.getElementById('canvas').classList.add('d-none');
     document.getElementById('endScreen').classList.remove('d-none');
     document.getElementById('restartButton').classList.remove('d-none');
+}
+
+function restartGame(){
     init();
+    document.getElementById('restartButton').classList.remove('d-none');
+    document.getElementById('endScreen').classList.add('d-none');
 }
 
 

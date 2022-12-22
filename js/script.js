@@ -27,3 +27,9 @@ function fullscreen() {
     enterFullscreen(element);
     
 }
+
+function resetGame() {
+    allIntervalIDs.forEach(id => {
+        clearInterval(id);
+    });
+}

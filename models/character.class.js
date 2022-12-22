@@ -151,7 +151,7 @@ class Character extends MovableObject {
             if (this.hurtE && !this.slap) {
                 this.playAnimation(this.IMAGES_HURT_ELECTRO);
             }
-
+            if(this.x > 2000) this.world.endzone = true;
             this.idle = (!this.world.keyboard.UP || !this.world.keyboard.DOWN || !this.world.keyboard.LEFT || !this.world.keyboard.RIGHT);
             this.buble = this.world.keyboard.SPACE;
             this.slap = this.world.keyboard.D;
@@ -162,7 +162,7 @@ class Character extends MovableObject {
 
     isHurt(enemy) {
         setTimeout(() => {
-            if (enemy instanceof Puffer && !this.slap) this.hurt = true;
+            if (enemy instanceof Puffer) this.hurt = true;
             if (enemy instanceof Jelly) this.hurtE = true;
         }, 300);
 

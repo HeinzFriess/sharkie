@@ -2,6 +2,8 @@ class World {
 
     character = new Character();
     endboss = new Endboss();
+    enemies = [new Jelly(), new Puffer()];
+    collectables = [new Coin, new Poison()];
     level;
     statusbars = [
         new StatusBar('energy'),
@@ -15,6 +17,7 @@ class World {
     camera_x = 0;
     endbossDead = false;
     characterDead = false;
+    endzone = false;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -27,7 +30,6 @@ class World {
         this.checkCollisions();
         this.clearElements();
         this.checkGameStatus();
-        //this.addEnemies();
     }
     setWorld() {
         this.character.world = this;
@@ -38,23 +40,15 @@ class World {
 
     }
 
-    resetGame() {
-        allIntervalIDs.forEach(id => {
-            clearInterval(id);
-        });
-        this.level.enemies = [];
-        this.level.collectables = [];
-    }
-
     checkGameStatus() {
         setDeletableInterval(() => {
-            if (this.character.energy == 0) {
+            if (this.characterDead) {
                 setTimeout(() => {
                     endOfGame(false);
-                    this.resetGame();
+                    resetGame();
                 }, 1000);
             };
-            if (this.endboss.energy < 0) {
+            if (this.endbossDead) {
                 setTimeout(() => {
                     endOfGame(true);
                     resetGame();
@@ -66,21 +60,21 @@ class World {
 
     checkCollisions() {
         setDeletableInterval(() => {
-            this.level.enemies.forEach((enemy) => {
+            if(this.character.energy <= 0) this.characterDead = true;
+            this.enemies.forEach((enemy) => {
                 if (this.character.isColliding(enemy) && this.character.energy > 0 && !this.character.hurt) {
-                    this.character.energy -= 5;
+                    //this.character.energy -= 5;
                     this.character.isHurt(enemy);
-
                 };
             });
-            this.level.collectables.forEach((collectable) => {
+            this.collectables.forEach((collectable) => {
                 if (this.character.isColliding(collectable) && collectable instanceof Coin && this.character.coins < 100) {
                     this.character.coins += 10;
-                    this.removeElementFromArray(collectable, this.level.collectables);
+                    this.removeElementFromArray(collectable, this.collectables);
                 };
                 if (this.character.isColliding(collectable) && collectable instanceof Poison && this.character.poisons < 100) {
                     this.character.poisons += 10;
-                    this.removeElementFromArray(collectable, this.level.collectables);
+                    this.removeElementFromArray(collectable, this.collectables);
                 };
             });
         }, 100);
@@ -89,16 +83,19 @@ class World {
 
     checkHit() {
         setDeletableInterval(() => {
-            this.level.enemies.forEach((enemy) => {
+            this.enemies.forEach((enemy) => {
                 if (this.character.isHit(enemy) && this.character.slap && this.character.coins > 0) {
-                    this.removeElementFromArray(enemy, this.level.enemies);
+                    this.removeElementFromArray(enemy, this.enemies);
                 };
                 this.throwableObjects.forEach((bubble) => {
                     if (bubble.isHit(enemy)) {
-                        this.removeElementFromArray(enemy, this.level.enemies);
+                        this.removeElementFromArray(enemy, this.enemies);
                         this.character.poisons -= 5;
                     }
-                    if (bubble.isHit(this.endboss)) this.endboss.isHurt();
+                    if (bubble.isHit(this.endboss)){
+                        if(!this.endboss.hurt)this.endboss.isHurt();
+                        this.removeElementFromArray(bubble, this.throwableObjects);
+                    };
                 });
 
             });
@@ -107,8 +104,8 @@ class World {
 
     clearElements() {
         setDeletableInterval(() => {
-            this.level.enemies.forEach(enemie => {
-                if (enemie.x < -50 || enemie.y > 500) this.removeElementFromArray(enemie, this.level.enemies)
+            this.enemies.forEach(enemie => {
+                if (enemie.x < -50 || enemie.y > 500) this.removeElementFromArray(enemie, this.enemies)
             });
             this.throwableObjects.forEach(bubble => {
                 if (bubble.y > 500) this.removeElementFromArray(bubble, this.throwableObjects)
@@ -128,9 +125,9 @@ class World {
         this.addObjectsToMap(this.level.waters);
         this.addObjectsToMap(this.level.backgrounds);
         this.addObjectToMap(this.character);
-        this.addObjectsToMap(this.level.collectables);
-        if (!this.endbossDead) this.addObjectToMap(this.endboss);
-        this.addObjectsToMap(this.level.enemies);
+        this.addObjectsToMap(this.collectables);
+        this.addObjectToMap(this.endboss);
+        this.addObjectsToMap(this.enemies);
         this.addObjectsToMap(this.throwableObjects);
         this.ctx.translate(-this.camera_x, 0);
         this.addObjectsToMap(this.statusbars);
