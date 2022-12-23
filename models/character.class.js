@@ -5,6 +5,9 @@ class Character extends MovableObject {
     hurt = false;
     hurtE = false;
     buble = false;
+    offSetY = 90;
+    offSetHight = 130;
+
 
     IMAGES_IDLE = [
         'img/1.Sharkie/1.IDLE/1.png',
@@ -107,7 +110,7 @@ class Character extends MovableObject {
         super().loadImage('img/1.Sharkie/1.IDLE/1.png');
         this.y = 50;
         this.x = 50;
-        this.height = 160;
+        this.height = 190;
         this.width = 220;
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_SWIM);
@@ -130,7 +133,7 @@ class Character extends MovableObject {
             }
 
             if (this.world.keyboard.D && !this.buble && !this.hurt && this.coins ) {
-                this.playAnimationOnce(this.IMAGES_SLAP, this.world.keyboard.D);
+                this.playAnimationOnce(this.IMAGES_SLAP, 600);
                 this.coins -= 1;
             }
 
@@ -162,7 +165,7 @@ class Character extends MovableObject {
 
     isHurt(enemy) {
         setTimeout(() => {
-            if (enemy instanceof Puffer) this.hurt = true;
+            if (enemy instanceof Puffer || enemy instanceof Endboss) this.hurt = true;
             if (enemy instanceof Jelly) this.hurtE = true;
         }, 300);
 

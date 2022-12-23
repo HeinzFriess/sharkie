@@ -1,14 +1,16 @@
 @font-face {
-    font-family:"Lucky_Guy";
+    font-family: "Lucky_Guy";
     src: url("./img/5.Font/Luckiest_Guy/LuckiestGuy-Regular.ttf") format("truetype");
-  }
-
-body{
-    margin: 0;
 }
 
-#screen{
-    height: 100vh;
+body {
+    margin: 0;
+    overflow-x: hidden;
+    
+}
+
+#screen {
+height: 100vh;
     width: 100vw;
     font-family: Lucky_Guy;
     display: flex;
@@ -17,27 +19,30 @@ body{
     background-color: midnightblue;
     background-image: url('img/3.Background/Dark/1.png');
     color: #7fffe0;
-    
 }
 
-canvas{
+canvas {
     background-color: orange;
-    border-radius: 24px;
+    /* border-radius: 24px; */
+    display: block;
 }
 
-h1{
+h1 {
     font-size: 64px;
 }
 
-.d-none{
-    display: none;
+.d-none {
+    display: none !important;
 }
 
-#startScreen{
-    /* background-image: url('img/3.Background/Layers/5.Water/D1.png');
-    background-color: midnightblue;
-    max-width: 720px;
-    max-height: 480px; */
+#fullScreenButton{
+    position: absolute;
+    left: 20px;
+    top: 20px;
+}
+
+
+#startScreen {
     background-size: cover;
     box-shadow: 11px 11px 11px 11px rgb(0 0 0 / 44%);
     border-radius: 24px;
@@ -45,40 +50,155 @@ h1{
     margin-right: 24px;
 }
 
-.button{
+#startButton{
+    position: absolute;
+    right: 15px;
+    top: 41px;
+    height: 28px;
+}
+
+/* #restartButton{
+    position: absolute;
+    right: 15px;
+    top: 20px;
+} */
+
+
+#endScreen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-size: cover;
+    /* box-shadow: 11px 11px 11px 11px rgb(0 0 0 / 44%); */
+    margin-left: 24px;
+    margin-right: 24px;
+    padding: 24px;
+    position: relative;
+    min-height: 250px;
+}
+
+#endScreenPic{
+    width: 90vw;
+}
+
+.button {
     height: 60px;
     width: 120px;
     object-fit: contain;
     cursor: pointer;
 }
 
-#sideMenu{
-    position: absolute;
-    top: 25px;
-    left: 25px;
-    height: 200px;
-    width: 200px;
-}
-
-.headline{
+.headline {
     text-align: center;
 }
 
-.explanation{
+.explanation {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
 }
 
-.explanationBox{
+.explanationBox {
     padding: 12px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
-    width: 200px;
+    width: 190px;
 }
 
-.explanation img{
+.explanation img {
     width: 180px;
 }
+
+#mobileControlL{
+    display: flex;
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    gap: 24px;
+}
+
+#mobileControlR{
+    display: flex;
+    position: absolute;
+    right: 20px;
+    bottom: 20px;
+    gap: 24px;
+}
+
+.mobileControl{
+    display: none;
+}
+
+.mobileButton{
+    cursor: pointer;
+    width: 32px;
+    height: 32px;
+    border-radius: 12px;
+    background-color: #7fffe0;
+    border-color: white;
+    color: midnightblue;
+}
+
+@media only screen and (max-width: 720px) {
+    canvas {
+        width: 100%;
+    }
+    #startScreen {
+        box-shadow: none;
+        border-radius: 0;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    #endScreen{
+        border-radius: 0;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    #sideMenu{
+        display: none;
+    }
+
+    #name{
+        display: none;
+    }
+
+    .mobileControl{
+        display: block;
+    }
+}
+
+@media only screen and (max-height: 480px) {
+    canvas {
+        height: 100vh;
+    }
+
+    #sideMenu {
+        display: none;
+    }
+
+    #name{
+        display: none;
+    }
+    #startScreen {
+        box-shadow: none;
+        border-radius: 0;
+        margin-left: 0;
+        margin-right: 0;
+    }
+    #endScreen{
+        border-radius: 0;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .mobileControl{
+        display: block;
+    }
+}
+
+
+
+

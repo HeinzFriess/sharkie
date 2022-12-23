@@ -60,10 +60,10 @@ class World {
 
     checkCollisions() {
         setDeletableInterval(() => {
-            if(this.character.energy <= 0) this.characterDead = true;
+            if (this.character.energy <= 0) this.characterDead = true;
             this.enemies.forEach((enemy) => {
                 if (this.character.isColliding(enemy) && this.character.energy > 0 && !this.character.hurt) {
-                    //this.character.energy -= 5;
+                    this.character.energy -= 5;
                     this.character.isHurt(enemy);
                 };
             });
@@ -77,6 +77,10 @@ class World {
                     this.removeElementFromArray(collectable, this.collectables);
                 };
             });
+            if(this.character.isColliding(this.endboss)){
+                this.character.energy -= 5;
+                this.character.isHurt(this.endboss);
+            };
         }, 100);
 
     }
@@ -92,8 +96,8 @@ class World {
                         this.removeElementFromArray(enemy, this.enemies);
                         this.character.poisons -= 5;
                     }
-                    if (bubble.isHit(this.endboss)){
-                        if(!this.endboss.hurt)this.endboss.isHurt();
+                    if (bubble.isHit(this.endboss)) {
+                        if (!this.endboss.hurt) this.endboss.isHurt();
                         this.removeElementFromArray(bubble, this.throwableObjects);
                     };
                 });

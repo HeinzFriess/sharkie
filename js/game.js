@@ -8,20 +8,20 @@ function init() {
     canvas = document.getElementById('canvas');
     canvas.classList.remove('d-none');
     world = new World(canvas, keyboard);
-    addEnemies();
+    //addEnemies();
     addCollectables();
-    //ctx.drawImage(character.src, 20, 20, 50, 100);
 }
 
-function initLevel1(){
+function initLevel1() {
     init();
     document.getElementById('canvas').classList.remove('d-none');
     document.getElementById('startScreen').classList.add('d-none');
     document.getElementById('startButton').classList.add('d-none');
     document.getElementById('endScreen').classList.add('d-none');
+    bindButtonPressEvents();
 }
 
-function addEnemies(){
+function addEnemies() {
     setDeletableInterval(() => {
         if (world.enemies.length < 20) world.enemies.push(new Puffer());
         if (world.enemies.length < 20) world.enemies.push(new Jelly());
@@ -29,25 +29,26 @@ function addEnemies(){
 }
 
 
-function addCollectables(){
+function addCollectables() {
     setDeletableInterval(() => {
         if (world.collectables.length < 20) world.collectables.push(new Coin());
         if (world.collectables.length < 20) world.collectables.push(new Poison());
     }, 2000);
 }
-function endOfGame(playerHasWone){
+function endOfGame(playerHasWone) {
     let element = document.getElementById('endScreenPic')
     if (!playerHasWone) {
         element.src = 'img/6.Botones/Tittles/Game Over/Recurso 12.png';
     }
+    else{
+        element.src = 'img/6.Botones/Tittles/You win/Mesa de trabajo 1.png';
+    }
     document.getElementById('canvas').classList.add('d-none');
     document.getElementById('endScreen').classList.remove('d-none');
-    document.getElementById('restartButton').classList.remove('d-none');
 }
 
-function restartGame(){
+function restartGame() {
     init();
-    document.getElementById('restartButton').classList.remove('d-none');
     document.getElementById('endScreen').classList.add('d-none');
 }
 
@@ -109,3 +110,56 @@ window.addEventListener("keyup", (e) => {
             break;
     }
 });
+
+function bindButtonPressEvents(){
+    document.getElementById('btnLeft').addEventListener('touchstart',(e) => {
+        e.preventDefault();
+        keyboard.LEFT = true;
+    });
+    document.getElementById('btnRight').addEventListener('touchstart',(e) => {
+        e.preventDefault();
+        keyboard.RIGHT = true;
+    });
+    document.getElementById('btnUp').addEventListener('touchstart',(e) => {
+        e.preventDefault();
+        keyboard.UP = true;
+    });
+    document.getElementById('btnDown').addEventListener('touchstart',(e) => {
+        e.preventDefault();
+        keyboard.DOWN = true;
+    });
+    document.getElementById('btnSlap').addEventListener('touchstart',(e) => {
+        e.preventDefault();
+        keyboard.D = true;
+    });
+    document.getElementById('btnBubble').addEventListener('touchstart',(e) => {
+        e.preventDefault();
+        keyboard.SPACE = true;
+    });
+
+    document.getElementById('btnLeft').addEventListener('touchend',(e) => {
+        e.preventDefault();
+        keyboard.LEFT = false;
+    });
+    document.getElementById('btnRight').addEventListener('touchend',(e) => {
+        e.preventDefault();
+        keyboard.RIGHT = false;
+    });
+    document.getElementById('btnUp').addEventListener('touchend',(e) => {
+        e.preventDefault();
+        keyboard.UP = false;
+    });
+    document.getElementById('btnDown').addEventListener('touchend',(e) => {
+        e.preventDefault();
+        keyboard.DOWN = false;
+    });
+    document.getElementById('btnSlap').addEventListener('touchend',(e) => {
+        e.preventDefault();
+        keyboard.D = false;
+    });
+    document.getElementById('btnBubble').addEventListener('touchend',(e) => {
+        e.preventDefault();
+        keyboard.SPACE = false;
+    });
+
+}

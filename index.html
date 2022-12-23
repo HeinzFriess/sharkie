@@ -31,7 +31,7 @@
 
 <body onload="">
     <div id="screen">
-        <h1>Sharkie</h1>
+        <h1 id="name">Sharkie</h1>
         <div id="startScreen" class="">
             <div class="headline">
                 <h2>Welcome to the adventure under the see</h2>
@@ -50,27 +50,32 @@
                     <img src="img/6.Botones/Key/Space Bar key.png" alt="">
                     <h4>when collected enough magic potion use the space bar to spit toxic bubbles</h4>
                 </div>
-
-
             </div>
-
         </div>
         <div id="endScreen" class="d-none">
-            <img id="endScreenPic" src="img/6.Botones/Tittles/You win/Mesa de trabajo 1.png"
-                style="width: 720px; border-radius: 24px">
-        </div>
-        <div id="sideMenu">
-            <img id="restartButton" class="button d-none" onclick="restartGame()"
+            <img id="endScreenPic" src="img/6.Botones/Tittles/You win/Mesa de trabajo 1.png">
+            <img id="restartButton" class="button" onclick="restartGame()"
                 src="img/6.Botones/Try again/Recurso 17.png" alt="">
-            <img id="fullScreenButton" class="button" onclick="fullscreen()" src="img/6.Botones/Full Screen/Mesa de trabajo 7.png"
-                alt="">
         </div>
         <canvas id="canvas" width="720" height="480" class="d-none">
 
         </canvas>
-
+        <div class="mobileControl">
+            <div id="mobileControlL">
+                <button class="mobileButton" id="btnLeft">⮜</button>
+                <button class="mobileButton" id="btnRight">⮞</button>
+            </div>
+            <div id="mobileControlR">
+                <button class="mobileButton" id="btnUp">⮝</button>
+                <button class="mobileButton" id="btnDown">⮟</button>
+                <button class="mobileButton" id="btnSlap">💫</button>
+                <button class="mobileButton" id="btnBubble">⚪</button>
+            </div>
+        </div>
+        
         <img id="startButton" class="button" onclick="initLevel1()" src="img/6.Botones/Start/2.png" alt="">
-
+        <!-- <img id="fullScreenButton" class="button" onclick="fullscreen()"
+            src="img/6.Botones/Full Screen/Mesa de trabajo 7.png" alt=""> -->
     </div>
 
 

@@ -4,7 +4,9 @@ class MovableObject extends DrawableObject{
     acceleration = 1.5;
     otherDirection = false;
     onCollisionCourse = true;
-    offsetY = 0;
+    offSetX = 0;
+    offSetHight = 0;
+    offSetY = 0;
     energy = 100;
 
     drawFrame(ctx){
@@ -12,7 +14,7 @@ class MovableObject extends DrawableObject{
         ctx.beginPath();
         ctx.lineWidth = '5';
         ctx.strokeStyle = 'blue';
-        ctx.rect(this.x, this.y, this.width, this.height);
+        ctx.rect(this.x, this.y + this.offSetY, this.width, this.height - this.offSetHight);
         ctx.stroke();
         }
     }
@@ -40,17 +42,17 @@ class MovableObject extends DrawableObject{
     }
 
     isColliding(obj) {
-        return  (this.x + this.width -25 ) >= obj.x && this.x <= (obj.x + obj.width) && 
-                (this.y + this.offsetY + this.height - 25) >= obj.y &&
-                (this.y + this.offsetY) <= (obj.y + obj.height) && 
+        return  (this.x + (this.width - 25) ) >= obj.x && this.x <= (obj.x + obj.width) && 
+                ((this.y + this.offSetY) + (this.height - this.offSetHight)) >= obj.y &&
+                (this.y + this.offSetY) <= (obj.y + obj.height) && 
                 obj.onCollisionCourse; // Optional: hiermit könnten wir schauen, ob ein Objekt sich in die richtige Richtung bewegt. Nur dann kollidieren wir. Nützlich bei Gegenständen, auf denen man stehen kann.
 
     }
     
     isHit(obj) {
         return  (this.x + this.width) >= obj.x && this.x <= (obj.x + obj.width) && 
-                (this.y + this.offsetY + this.height) >= obj.y &&
-                (this.y + this.offsetY) <= (obj.y + obj.height);
+                ((this.y + this.offSetY) + (this.height - this.offSetHight)) >= obj.y &&
+                (this.y + this.offSetY) <= (obj.y + obj.height);
     }
 
     applyGravity(){
