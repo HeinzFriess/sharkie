@@ -40,51 +40,81 @@ class World {
 
     }
 
+    /**
+     * checking the Status of the character and the endoss
+     */
     checkGameStatus() {
         setDeletableInterval(() => {
             if (this.characterDead) {
                 setTimeout(() => {
                     endOfGame(false);
-                    resetGame();
+                    deleteIntervals();
                 }, 1000);
             };
             if (this.endbossDead) {
                 setTimeout(() => {
                     endOfGame(true);
-                    resetGame();
+                    deleteIntervals();
                 }, 1000);
             };
         }, 100);
 
     }
 
+    /**
+     * checking the collision of character with enemy, collectables and endboss
+     */
     checkCollisions() {
         setDeletableInterval(() => {
-            if (this.character.energy <= 0) this.characterDead = true;
+            this.checkCollisionEnemy();
+            this.checkCollisionCollectable();
+            this.checkCollisionEndboss();
+        }, 100);
+
+    }
+
+    /**
+     * checking the collision of character with enemy
+     */
+    checkCollisionEnemy() {
+        if (this.character.energy <= 0) this.characterDead = true;
             this.enemies.forEach((enemy) => {
                 if (this.character.isColliding(enemy) && this.character.energy > 0 && !this.character.hurt) {
                     this.character.energy -= 5;
                     this.character.isHurt(enemy);
                 };
             });
-            this.collectables.forEach((collectable) => {
-                if (this.character.isColliding(collectable) && collectable instanceof Coin && this.character.coins < 100) {
-                    this.character.coins += 10;
-                    this.removeElementFromArray(collectable, this.collectables);
-                };
-                if (this.character.isColliding(collectable) && collectable instanceof Poison && this.character.poisons < 100) {
-                    this.character.poisons += 10;
-                    this.removeElementFromArray(collectable, this.collectables);
-                };
-            });
-            if(this.character.isColliding(this.endboss)){
-                this.character.energy -= 5;
-                this.character.isHurt(this.endboss);
-            };
-        }, 100);
-
     }
 
+    /**
+     * checking the collision of character with collectable
+     */
+    checkCollisionCollectable() {
+        this.collectables.forEach((collectable) => {
+            if (this.character.isColliding(collectable) && collectable instanceof Coin && this.character.coins < 100) {
+                this.character.coins += 10;
+                this.removeElementFromArray(collectable, this.collectables);
+            };
+            if (this.character.isColliding(collectable) && collectable instanceof Poison && this.character.poisons < 100) {
+                this.character.poisons += 10;
+                this.removeElementFromArray(collectable, this.collectables);
+            };
+        });
+    }
+
+    /**
+     * checking the collision of character with endboss
+     */
+    checkCollisionEndboss() {
+        if(this.character.isColliding(this.endboss)){
+            this.character.energy -= 5;
+            this.character.isHurt(this.endboss);
+        };
+    }
+
+    /**
+     * checking the hit of the slap and the bubble with the enemy or endboss
+     */
     checkHit() {
         setDeletableInterval(() => {
             this.enemies.forEach((enemy) => {
@@ -106,6 +136,9 @@ class World {
         }, 80);
     }
 
+    /**
+     * removes elements that are outside of the map
+     */
     clearElements() {
         setDeletableInterval(() => {
             this.enemies.forEach(enemie => {
@@ -118,6 +151,11 @@ class World {
 
     }
 
+    /**
+     * removes the given element from of the given array
+     * @param {object} element 
+     * @param {array} array 
+     */
     removeElementFromArray(element, array) {
         let index = array.indexOf(element);
         array.splice(index, 1);
@@ -135,15 +173,11 @@ class World {
         this.addObjectsToMap(this.throwableObjects);
         this.ctx.translate(-this.camera_x, 0);
         this.addObjectsToMap(this.statusbars);
-
-
         let self = this;
         requestAnimationFrame(function () { self.draw(); });
-
     }
 
     addObjectsToMap(objects) {
-
         if (objects) {
             objects.forEach(o => {
                 this.addObjectToMap(o);

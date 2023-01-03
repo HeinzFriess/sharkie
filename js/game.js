@@ -4,6 +4,9 @@ let canvasheight = 480;
 let canvaswidth = 720;
 let keyboard = new Keyboard();
 
+/**
+ * inititalise the main game elements
+ */
 function init() {
     canvas = document.getElementById('canvas');
     canvas.classList.remove('d-none');
@@ -12,6 +15,10 @@ function init() {
     addCollectables();
 }
 
+
+/**
+ * initialise the first level
+ */
 function initLevel1() {
     init();
     document.getElementById('canvas').classList.remove('d-none');
@@ -21,6 +28,9 @@ function initLevel1() {
     bindButtonPressEvents();
 }
 
+/**
+ * add new Enemies to the Map
+ */
 function addEnemies() {
     setDeletableInterval(() => {
         if (world.enemies.length < 20) world.enemies.push(new Puffer());
@@ -28,13 +38,20 @@ function addEnemies() {
     }, 2000);
 }
 
-
+/**
+ * add new Coins and Bottles of Poison to the Map
+ */
 function addCollectables() {
     setDeletableInterval(() => {
         if (world.collectables.length < 20) world.collectables.push(new Coin());
         if (world.collectables.length < 20) world.collectables.push(new Poison());
     }, 2000);
 }
+
+/**
+ * shows the endscreen depending on the given parameter
+ * @param {boolean} playerHasWone 
+ */
 function endOfGame(playerHasWone) {
     let element = document.getElementById('endScreenPic')
     if (!playerHasWone) {
@@ -47,12 +64,17 @@ function endOfGame(playerHasWone) {
     document.getElementById('endScreen').classList.remove('d-none');
 }
 
+/**
+ * is restarting the game
+ */
 function restartGame() {
     init();
     document.getElementById('endScreen').classList.add('d-none');
 }
 
-
+/**
+ * adds the keyboard eventlisteners
+ */
 window.addEventListener("keydown", (e) => {
     switch (e.which) {
         case 38:
@@ -111,6 +133,9 @@ window.addEventListener("keyup", (e) => {
     }
 });
 
+/**
+ * adds the touch eventlisteners
+ */
 function bindButtonPressEvents(){
     document.getElementById('btnLeft').addEventListener('touchstart',(e) => {
         e.preventDefault();

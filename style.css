@@ -43,6 +43,11 @@ h1 {
 
 
 #startScreen {
+    position: relative;
+    top: 0px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     background-size: cover;
     box-shadow: 11px 11px 11px 11px rgb(0 0 0 / 44%);
     border-radius: 24px;
@@ -52,16 +57,15 @@ h1 {
 
 #startButton{
     position: absolute;
-    right: 15px;
-    top: 41px;
+    top: calc(100%/2 - 30px);
     height: 28px;
 }
 
-/* #restartButton{
+#restartButton{
     position: absolute;
-    right: 15px;
-    top: 20px;
-} */
+    bottom: 6px;
+    left: calc(100vw/2 - 60px);
+}
 
 
 #endScreen {
@@ -168,6 +172,15 @@ h1 {
     .mobileControl{
         display: block;
     }
+
+    .explanation {
+        overflow: scroll;
+        height: 300px;
+    }
+
+    #startButton {
+        top: 520px;
+    }
 }
 
 @media only screen and (max-height: 480px) {
@@ -196,6 +209,15 @@ h1 {
 
     .mobileControl{
         display: block;
+    }
+
+    #startButton {
+        top: 120px;
+    }
+
+    .explanation {
+        overflow: scroll;
+        height: unset;
     }
 }
 
