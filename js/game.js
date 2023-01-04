@@ -10,6 +10,7 @@ let keyboard = new Keyboard();
 function init() {
     canvas = document.getElementById('canvas');
     canvas.classList.remove('d-none');
+    document.getElementById('mobileControl').classList.remove('d-none');
     world = new World(canvas, keyboard);
     addEnemies();
     addCollectables();
@@ -61,6 +62,7 @@ function endOfGame(playerHasWone) {
         element.src = 'img/6.Botones/Tittles/You win/Mesa de trabajo 1.png';
     }
     document.getElementById('canvas').classList.add('d-none');
+    document.getElementById('mobileControl').classList.add('d-none');
     document.getElementById('endScreen').classList.remove('d-none');
 }
 

@@ -109,9 +109,14 @@ class Character extends MovableObject {
     constructor() {
         super().loadImage('img/1.Sharkie/1.IDLE/1.png');
         this.y = 50;
-        this.x = 50;
+        this.x = 5;
         this.height = 190;
         this.width = 220;
+        this.loadAllImages();
+        this.animate();
+    }
+
+    loadAllImages() {
         this.loadImages(this.IMAGES_IDLE);
         this.loadImages(this.IMAGES_SWIM);
         this.loadImages(this.IMAGES_SLAP);
@@ -119,48 +124,70 @@ class Character extends MovableObject {
         this.loadImages(this.IMAGES_POISONED);
         this.loadImages(this.IMAGES_HURT_POISONED);
         this.loadImages(this.IMAGES_HURT_ELECTRO);
-        this.animate();
     }
 
     animate() {
-        this.slap = false;
-        this.buble = false;
         setDeletableInterval(() => {
             this.move();
-
-            if (this.idle && !this.slap && !this.buble && !this.hurt) {
-                this.playAnimation(this.IMAGES_IDLE);
-            }
-
-            if (this.world.keyboard.D && !this.buble && !this.hurt && this.coins ) {
-                this.playAnimationOnce(this.IMAGES_SLAP, 600);
-                this.coins -= 1;
-            }
-
-            if (this.world.keyboard.SPACE && !this.slap && !this.hurt && this.poisons) { 
-                this.playAnimation(this.IMAGES_BUBBLE, this.world.keyboard.SPACE);
-                if(this.world.throwableObjects.length == 0)this.world.throwableObjects.push(new ThrowableObject(this.x, this.y));
-                this.bubble -= 10;
-            }
-
-            if (!this.idle && !this.slap && !this.buble && !this.hurt) {
-                this.playAnimation(this.IMAGES_SWIM);
-            }
-
-            if (this.hurt && !this.slap) {
-                this.playAnimation(this.IMAGES_HURT_POISONED);
-            }
-
-            if (this.hurtE && !this.slap) {
-                this.playAnimation(this.IMAGES_HURT_ELECTRO);
-            }
-            if(this.x > 2000) this.world.endzone = true;
-            this.idle = (!this.world.keyboard.UP || !this.world.keyboard.DOWN || !this.world.keyboard.LEFT || !this.world.keyboard.RIGHT);
-            this.buble = this.world.keyboard.SPACE;
-            this.slap = this.world.keyboard.D;
+            this.animateIdle();
+            this.animateSlap();
+            this.animateSwimm();
+            this.animateHurt();
+            this.animateBubble();
+            this.animateStatus();
         }, 1000 / 15);
+    }
 
+    animateIdle() {
+        if (this.idle && !this.slap && !this.buble && !this.hurt) {
+            this.playAnimation(this.IMAGES_IDLE);
+        }
+    }
 
+    animateSlap() {
+        if (this.world.keyboard.D && !this.buble && !this.hurt && this.coins) {
+            this.playAnimationOnce(this.IMAGES_SLAP, 600);
+            this.coins -= 1;
+        }
+    }
+
+    animateSwimm() {
+        if (!this.idle && !this.slap && !this.buble && !this.hurt) {
+            this.playAnimation(this.IMAGES_SWIM);
+        }
+    }
+
+    animateBubble() {
+        if (this.world.keyboard.SPACE && !this.slap && !this.hurt && this.poisons) {
+            this.playAnimation(this.IMAGES_BUBBLE, this.world.keyboard.SPACE);
+            this.instanciateBubble();
+            this.bubble -= 10;
+        }
+    }
+
+    instanciateBubble(){
+        if (this.world.throwableObjects.length == 0) this.world.throwableObjects.push(new ThrowableObject(this.x, this.y, this.otherDirection));
+    }
+
+    animateHurt() {
+        if (this.hurt && !this.slap) {
+            this.playAnimation(this.IMAGES_HURT_POISONED);
+        }
+        if (this.hurtE && !this.slap) {
+            this.playAnimation(this.IMAGES_HURT_ELECTRO);
+        }
+    }
+
+    animateStatus() {
+        if (this.x > 2000) {
+            this.world.endzone = true;
+            setTimeout(() => {
+                if(!this.world.firstEndzone) this.world.firstEndzone = true;
+            }, 1000);
+        };
+        this.idle = (!this.world.keyboard.UP || !this.world.keyboard.DOWN || !this.world.keyboard.LEFT || !this.world.keyboard.RIGHT);
+        this.buble = this.world.keyboard.SPACE;
+        this.slap = this.world.keyboard.D;
     }
 
     isHurt(enemy) {
@@ -168,7 +195,6 @@ class Character extends MovableObject {
             if (enemy instanceof Puffer || enemy instanceof Endboss) this.hurt = true;
             if (enemy instanceof Jelly) this.hurtE = true;
         }, 300);
-
         setTimeout(() => {
             this.hurt = false;
             this.hurtE = false;
@@ -176,33 +202,39 @@ class Character extends MovableObject {
     }
 
     move() {
+        this.moveUpDown();
+        this.moveLeftRight()
+    }
+
+    moveUpDown() {
         if (this.world.keyboard.UP) {
             if (this.y > -70) {
                 this.y = this.y - 15;
                 this.idle = false;
             }
-
         }
         if (this.world.keyboard.DOWN) {
             if (this.y < 350) {
                 this.y = this.y + 15;
                 this.idle = false;
             }
-
         }
+    }
+
+    moveLeftRight() {
         if (this.world.keyboard.LEFT && this.x > 15) {
-            this.x = this.x - 15;
+            if(this.otherDirection)this.x = this.x - 15;
+            if (this.x < this.world.level.levelEndCamera) this.world.camera_x = -this.x;
             this.idle = false;
             this.otherDirection = true;
-            if (this.x < this.world.level.levelEndCamera) this.world.camera_x = -this.x;
+            
         }
         if (this.world.keyboard.RIGHT && this.x < this.world.level.levelEndCharacter) {
-            this.x = this.x + 15;
+            if(!this.otherDirection)this.x = this.x + 15; 
+            if (this.x < this.world.level.levelEndCamera) this.world.camera_x = -this.x;
             this.idle = false;
             this.otherDirection = false;
-            if (this.x < this.world.level.levelEndCamera) this.world.camera_x = -this.x;
         }
-
     }
 
 

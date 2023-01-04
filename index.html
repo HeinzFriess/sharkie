@@ -57,28 +57,45 @@
 
         <div id="endScreen" class="d-none">
             <img id="endScreenPic" src="img/6.Botones/Tittles/You win/Mesa de trabajo 1.png">
-            <img id="restartButton" class="button" onclick="restartGame()"
-                src="img/6.Botones/Try again/Recurso 17.png" alt="">
+            <img id="restartButton" class="button" onclick="restartGame()" src="img/6.Botones/Try again/Recurso 17.png"
+                alt="">
         </div>
 
         <canvas id="canvas" width="720" height="480" class="d-none">
         </canvas>
-        
-        <div class="mobileControl">
+        <div class="landscape">
+            <h3>! use phone in landscape !</h3>
+        </div>
+        <div id="mobileControl" class="mobileControl d-none">
             <div id="mobileControlL">
-                <button class="mobileButton" id="btnLeft">⮜</button>
-                <button class="mobileButton" id="btnRight">⮞</button>
+                <div class="mobileButtonDiv">
+                    <button class="mobileButton" id="btnLeft">&#11207</button>
+                    <h6>Left</h6>
+                </div>
+                <div class="mobileButtonDiv">
+                    <button class="mobileButton" id="btnRight">&#11208</button>
+                    <h6>Right</h6>
+                </div>
             </div>
             <div id="mobileControlR">
-                <button class="mobileButton" id="btnUp">⮝</button>
-                <button class="mobileButton" id="btnDown">⮟</button>
-                <button class="mobileButton" id="btnSlap">💫</button>
-                <button class="mobileButton" id="btnBubble">⚪</button>
+                <div class="mobileButtonDiv">
+                    <button class="mobileButton" id="btnUp">&#11205</button>
+                    <h6>Up</h6>
+                </div>
+                <div class="mobileButtonDiv">
+                    <button class="mobileButton" id="btnDown">&#11206</button>
+                    <h6>Down</h6>
+                </div>
+                <div class="mobileButtonDiv">
+                    <button class="mobileButton" id="btnSlap">&#11119</button>
+                    <h6>Slap</h6>
+                </div>
+                <div class="mobileButtonDiv">
+                    <button class="mobileButton" id="btnBubble">&#11044</button>
+                    <h6>Bubble</h6>
+                </div>
             </div>
         </div>
-        
-        <!-- <img id="fullScreenButton" class="button" onclick="fullscreen()"
-            src="img/6.Botones/Full Screen/Mesa de trabajo 7.png" alt=""> -->
     </div>
 
 

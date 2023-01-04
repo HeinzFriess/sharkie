@@ -10,7 +10,7 @@ class MovableObject extends DrawableObject{
     energy = 100;
 
     drawFrame(ctx){
-        if(this instanceof Character || this instanceof Puffer){
+        if(this instanceof Character || this instanceof Puffer || this instanceof Jelly){
         ctx.beginPath();
         ctx.lineWidth = '5';
         ctx.strokeStyle = 'blue';

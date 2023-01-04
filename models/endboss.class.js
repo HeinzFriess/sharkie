@@ -8,7 +8,6 @@ class Endboss extends MovableObject {
     animationObject;
     reverse = false;
 
-
     IMAGES_INTRO = [
         'img/2.Enemy/3FinalEnemy/1.Introduce/1.png',
         'img/2.Enemy/3FinalEnemy/1.Introduce/2.png',
@@ -64,56 +63,42 @@ class Endboss extends MovableObject {
     ];
 
     constructor() {
-        super().loadImage(this.IMAGES_INTRO[1]);
+        super();
         this.loadImages(this.IMAGES_INTRO);
         this.loadImages(this.IMAGES_FLOAT);
         this.loadImages(this.IMAGES_ATTACK);
         this.loadImages(this.IMAGES_HURT);
         this.loadImages(this.IMAGES_DEAD);
+        this.loadImage(this.IMAGES_INTRO[1]);
         this.animate();
     }
 
+
     animate() {
-        let firstEndzone = false;
         setDeletableInterval(() => {
             if (this.world.endzone) {
-                if(!firstEndzone){
-                    this.animationObject = new AnimationObject(this, this.IMAGES_INTRO, 500);
-                    this.x = 2400;
-                }
-                firstEndzone = true;
-            }
-            if (this.world.endzone && this.idle && !this.sequenz && !this.world.endboss.energy <= 0) {
-                this.playAnimation(this.IMAGES_FLOAT);
+                this.animateIntro();
+                this.animateFloat();
             }
         }, 1000 / 10);
         setDeletableInterval(() => {
-            if(this.world.endzone)this.showAttack();
+            if (this.world.endzone) this.animateAttack();
         }, 3000);
     }
 
-    isHurt() {
-        if (!this.hurt) {
-            this.energy -= 25;
-            this.hurt = true;
-            this.animationObject = new AnimationObject(this, this.IMAGES_HURT, 500);
-            if (this.energy <= 0) {
-                this.idle = false;
-                this.animationObject = new AnimationObject(this, this.IMAGES_DEAD, 500);
-                setDeletableInterval(() => {
-                    if (!this.sequenz && this.y < 400) this.y += 20;
-                }, 200);
-                setTimeout(() => {
-                    this.world.endbossDead = true;
-                }, 2000);
-            }
+    animateIntro() {
+        if (!this.world.firstEndzone && !this.sequenz) {
+            this.x = 2400;
+            this.animationObject = new AnimationObject(this, this.IMAGES_INTRO, 350);
         }
-        setTimeout(() => {
-            this.hurt = false;
-        }, 1200);
+    }
+    animateFloat() {
+        if (this.world.endzone && this.world.firstEndzone && this.idle && !this.sequenz && !this.world.endboss.energy <= 0) {
+            this.playAnimation(this.IMAGES_FLOAT);
+        }
     }
 
-    showAttack() {
+    animateAttack() {
         if (!this.hurt && !this.sequenz && !this.world.endboss.energy <= 0) {
             this.animationObject = new AnimationObject(this, this.IMAGES_ATTACK, 300);
             setTimeout(() => {
@@ -122,4 +107,29 @@ class Endboss extends MovableObject {
         }
 
     }
+
+    isHurt() {
+        if (!this.hurt) {
+            this.energy -= 25;
+            this.hurt = true;
+            this.animationObject = new AnimationObject(this, this.IMAGES_HURT, 500);
+            if (this.energy <= 0) this.animateDead();
+        }
+        setTimeout(() => {
+            this.hurt = false;
+        }, 1200);
+    }
+
+    animateDead() {
+        this.idle = false;
+        this.animationObject = new AnimationObject(this, this.IMAGES_DEAD, 500);
+        setDeletableInterval(() => {
+            if (!this.sequenz && this.y < 400) this.y += 20;
+        }, 200);
+        setTimeout(() => {
+            this.world.endbossDead = true;
+        }, 2000);
+    }
+
+
 }

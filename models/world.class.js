@@ -18,6 +18,7 @@ class World {
     endbossDead = false;
     characterDead = false;
     endzone = false;
+    firstEndzone = false;
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -48,12 +49,14 @@ class World {
             if (this.characterDead) {
                 setTimeout(() => {
                     endOfGame(false);
+                    this.firstEndzone = false;
                     deleteIntervals();
                 }, 1000);
             };
             if (this.endbossDead) {
                 setTimeout(() => {
                     endOfGame(true);
+                    this.firstEndzone = false;
                     deleteIntervals();
                 }, 1000);
             };
@@ -131,7 +134,6 @@ class World {
                         this.removeElementFromArray(bubble, this.throwableObjects);
                     };
                 });
-
             });
         }, 80);
     }
@@ -188,7 +190,7 @@ class World {
     addObjectToMap(mo) {
         if (mo.otherDirection) this.flipImage(mo);
         mo.draw(this.ctx);
-        //if (mo instanceof MovableObject) mo.drawFrame(this.ctx);
+        //if (mo instanceof MovableObject) mo.drawFrame(this.ctx); 
         if (mo.otherDirection) this.flipImageBack(mo);
     }
 
